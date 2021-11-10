@@ -168,5 +168,4 @@ export default {
 		color: #FFF;
 	}
 
-
 </style>

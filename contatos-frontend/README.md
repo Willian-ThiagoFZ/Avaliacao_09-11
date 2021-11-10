@@ -1,4 +1,5 @@
 # todo
+npm run serve -- --port 3000
 
 ## Project setup
 ```
