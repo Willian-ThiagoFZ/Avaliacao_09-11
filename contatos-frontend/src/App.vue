@@ -3,7 +3,7 @@
   <div id="app">
     <nav>
       <div class="nav-wrapper blue darken-1">
-        <a href="#" class="brand-logo center">Contatos</a>
+        <a href="#" class="brand-logo center">Lista de Contatos</a>
       </div>
     </nav>
 

@@ -6,6 +6,10 @@ export default {
         return http.get('/')
     },
 
+    listarById: (contato) => {
+        return http.get(`/${contato.id}`)
+    },
+
     salvar: (contato) => {
         return http.post('/', contato)
     },

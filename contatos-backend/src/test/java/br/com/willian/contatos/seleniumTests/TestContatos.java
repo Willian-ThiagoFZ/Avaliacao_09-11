@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -18,6 +19,24 @@ import static org.junit.Assert.assertTrue;
 public class TestContatos {
 
     private WebDriver driver;
+
+    private String retornaNomeAleatorio(){
+        Random random = new Random();
+        int numeroInteiroAleatorio_0_a_1000 = random.nextInt(1000);
+        return "SeleniumTestes" + numeroInteiroAleatorio_0_a_1000;
+    }
+
+    private String retornaEmailAleatorio(){
+        Random random = new Random();
+        int numeroInteiroAleatorio_0_a_1000 = random.nextInt(1000);
+        return "SeleniumTestes" + numeroInteiroAleatorio_0_a_1000 + "@hotmail.com";
+    }
+
+    private String retornaTelefoneAleatorio(){
+        Random random = new Random();
+        Integer telefone = random.nextInt((999999999 - 111111111) + 1) + 100000;
+        return Integer.toString(telefone);
+    }
 
     @Before
     public void setUp() throws Exception{
@@ -35,22 +54,27 @@ public class TestContatos {
     /*TESTE PARA ABRIR NAVEGADOR E VERIFICAR SE O SITE ABRE*/
 
     @Test
-    public void ListarAsTarefas() throws InterruptedException {
+    public void ListarOsContatos() throws InterruptedException {
         driver.get("http://localhost:3000/");
         Thread.sleep(3000);
-        assertTrue("Título da Página difere do esperado", driver.getTitle().contentEquals("Minhas Tarefas"));
+        assertTrue("Título da Página difere do esperado", driver.getTitle().contentEquals("Lista de Contatos"));
     }
 
     /*TESTE PARA CADASTRAR UM NOVA TAREFA*/
 
     @Test
-    public void RegisterTodo() throws InterruptedException {
+    public void RegisterContact() throws InterruptedException {
         driver.get("http://localhost:3000/");
         Thread.sleep(3000);
         try{
-            driver.findElement(By.xpath("/html/body/div/div[2]/input")).sendKeys("Lavar Louça" + Keys.ENTER);
+            driver.findElement(By.xpath("/html/body/div/div/form/input[1]")).sendKeys(retornaNomeAleatorio());
+            driver.findElement(By.xpath("/html/body/div/div/form/input[2]")).sendKeys(retornaEmailAleatorio());
+            driver.findElement(By.xpath("/html/body/div/div/form/input[3]")).sendKeys(retornaTelefoneAleatorio());
             Thread.sleep(2000);
-            assertEquals("Lavar Louça", driver.findElement(By.xpath("/html/body/div/div[3]/div/p")).getText());
+            driver.findElement(By.xpath("/html/body/div/div/form/button")).click();
+            Thread.sleep(2000);
+            driver.switchTo().alert().accept();
+            Thread.sleep(2000);
         }
         finally {
             driver.quit();
@@ -60,14 +84,14 @@ public class TestContatos {
     /*TESTE PARA DELETAR UMA TAREFA*/
 
     @Test
-    public void DeleteTodo() throws InterruptedException {
+    public void DeleteContact() throws InterruptedException {
         driver.get("http://localhost:3000/");
         Thread.sleep(3000);
         try{
-            driver.findElement(By.xpath("/html/body/div/div[2]/input")).sendKeys("Lavar o Carro" + Keys.ENTER);
-            Thread.sleep(2000);
-            driver.findElement(By.xpath("/html/body/div/div[3]/div/span")).click();
-            Thread.sleep(2000);
+            driver.findElement(By.xpath("/html/body/div/div/table/tbody/tr/td[4]/button[2]")).click();
+            Thread.sleep(3000);
+            driver.switchTo().alert().accept();
+            Thread.sleep(3000);
         }
         finally {
             driver.quit();
@@ -75,21 +99,23 @@ public class TestContatos {
     }
 
     @Test
-    public void ConcluiTarefa() throws InterruptedException {
+    public void UpdateContact() throws InterruptedException {
         driver.get("http://localhost:3000/");
         Thread.sleep(3000);
         try{
-            driver.findElement(By.xpath("/html/body/div/div[2]/input")).sendKeys("limpar a casa" + Keys.ENTER);
-            driver.findElement(By.xpath("/html/body/div/div[2]/input")).sendKeys("finalizar o relatório" + Keys.ENTER);
+            driver.findElement(By.xpath("/html/body/div/div/table/tbody/tr/td[4]/button[1]")).click();
             Thread.sleep(2000);
-            driver.findElement(By.xpath("/html/body/div/div[3]/div")).click();
+            driver.findElement(By.xpath("/html/body/div/div/form/input[2]")).sendKeys(retornaEmailAleatorio());
+            driver.findElement(By.xpath("/html/body/div/div/form/input[3]")).sendKeys(retornaTelefoneAleatorio());
             Thread.sleep(2000);
-            assertEquals("limpar a casa", driver.findElement(By.xpath("/html/body/div/div[3]/div/p")).getText());
+            driver.findElement(By.xpath("/html/body/div/div/form/button")).click();
+            Thread.sleep(2000);
+            driver.switchTo().alert().accept();
+            Thread.sleep(2000);
         }
         finally {
             driver.quit();
         }
     }
-
 
 }

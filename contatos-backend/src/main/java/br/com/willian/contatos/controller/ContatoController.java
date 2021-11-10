@@ -39,13 +39,19 @@ public class ContatoController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public ContatoDTO createContact(@RequestBody ContatoRequest contato){
-        var contact = new Contato();
-        contact.setNome(contato.getNome());
-        contact.setEmail(contato.getEmail());
-        contact.setTelefone(contato.getTelefone());
-        contatoRepository.save(contact);
-        return ContatoDTO.converter(contact);
+    public ContatoDTO createContact(@RequestBody ContatoRequest contato) throws Exception {
+        var email = contatoRepository.findContatoByEmail(contato.getEmail());
+        var telefone = contatoRepository.findContatoByTelefone(contato.getTelefone());
+        if (email.isPresent() || telefone.isPresent()){
+            throw new Exception("Este E-mail ou Telefone já está cadastrado no nosso sistema");
+        }else{
+            var contact = new Contato();
+            contact.setNome(contato.getNome());
+            contact.setEmail(contato.getEmail());
+            contact.setTelefone(contato.getTelefone());
+            contatoRepository.save(contact);
+            return ContatoDTO.converter(contact);
+        }
     }
 
     @PutMapping("/{id}")
