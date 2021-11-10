@@ -4,6 +4,7 @@ import br.com.willian.contatos.controller.dto.ContatoDTO;
 import br.com.willian.contatos.controller.dto.ContatoRequest;
 import br.com.willian.contatos.model.Contato;
 import br.com.willian.contatos.repository.ContatoRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,8 +41,8 @@ public class ContatoController {
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public ContatoDTO createContact(@RequestBody ContatoRequest contato) throws Exception {
-        var email = contatoRepository.findContatoByEmail(contato.getEmail());
-        var telefone = contatoRepository.findContatoByTelefone(contato.getTelefone());
+        var email = contatoRepository.findContatoByEmail(StringUtils.deleteWhitespace(contato.getEmail()));
+        var telefone = contatoRepository.findContatoByTelefone(StringUtils.deleteWhitespace(contato.getTelefone()));
         if (email.isPresent() || telefone.isPresent()){
             throw new Exception("Este E-mail ou Telefone já está cadastrado no nosso sistema");
         }else{

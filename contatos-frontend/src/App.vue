@@ -8,13 +8,9 @@
     </nav>
 
     <div class="container">
-
-      <ul>
-        <li v-for="(erro, index) of errors" :key="index">
-          campo <b>{{erro.field}}</b> - {{erro.defaultMessage}}
-        </li>
-      </ul>
-
+		<div v-if="errors.length > 0" class="diverro">
+			<h5>{{errors}}</h5>
+		</div>
 
       <form @submit.prevent="salvar">
 
@@ -104,7 +100,7 @@ export default {
 			  this.listar()
 			  this.errors = {}
 			}).catch(e => {
-			  this.errors = e.response.data.errors
+			  this.errors = e.response.data.message
 			})
 		}else{
 			Contato.atualizar(this.contato).then(() => {
@@ -113,7 +109,7 @@ export default {
 			  alert('Atualizado com sucesso!')
 			  this.listar()
 			}).catch(e => {
-			  this.errors = e.response.data.errors
+			  this.errors = e.response.data.message
 			})
 		}
       
@@ -132,7 +128,7 @@ export default {
           this.listar()
           this.errors = {}
         }).catch(e => {
-          this.errors = e.response.data.errors
+          this.errors = e.response.data.message
         })
 
       }
@@ -166,6 +162,17 @@ export default {
 
 	input{
 		color: #FFF;
+	}
+
+	.diverro{
+		width: 700px;
+		height: 35px;
+		background-color: rgb(199, 72, 72);
+		text-align: center;
+		align-content: center;
+		margin-bottom: 50px;
+		margin-top: 50px;
+		border-radius: 5px;
 	}
 
 </style>
